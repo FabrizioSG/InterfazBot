@@ -5,29 +5,24 @@ import requests
 import json
 import webbrowser
 root = Tk()
-root.geometry("700x500")
+root.geometry("925x630")
 root.option_add('*Font','19')
 root.eval('tk::PlaceWindow . center')
 root.title("Jr Jenkins")
 
 canvas = Canvas(root, width = 700, height = 700)
-canvas.grid(row=1,columnspan =8,padx=100)
-img = PhotoImage(file="dribbble.png")
+canvas.grid(row=1,columnspan =10,padx=235)
+img = PhotoImage(file="123.png")
 canvas.create_image(-9,-9,anchor=NW, image=img)
-
 
 def open_url(url):
    webbrowser.open_new_tab(url)
-
-def hide_button(widget):
-    # This will remove the widget from toplevel
-    widget.grid_forget()
 
 def cambioEmail():
     email = Toplevel()
     email.geometry("800x225")
     # telefono.eval('tk::PlaceWindow . center')
-    email.title("Cambio de email")
+    email.title("Cambio de correo")
     email.option_add('*Font', '19')
     relleno = Label(email, text='')
     relleno.grid(row=0, column=0, padx=5, pady=5)
@@ -49,10 +44,20 @@ def cambioEmail():
 
     myButton3 = Button(email, text="ENVIAR",
                        command=lambda: updateEmailSend(str(sub.get()), str(emailE.get()), str(var1.get()),
-                                                            str(var2.get())), fg="white", bg='#3d8af7',width = 20)
+                                                            str(var2.get())), fg="white", bg='#404040',width = 20)
     myButton3.grid(pady=5, padx=5, row=5, column=3)
 
 def updateEmailSend(viejo,nuevo,taxi,moni):
+    titulo = ""
+    if(moni == "1" and taxi == "0"):
+        titulo = "Cambio de Correo Con Moni NO Conductor"
+    elif(moni == "1" and taxi == "1"):
+        titulo = "Cambio de Correo con Moni Conductor"
+    elif(moni == "0" and taxi == "0"):
+        titulo = "Cambio de Correo sin Moni NO conductor"
+    elif(moni == "0" and taxi == "1"):
+        titulo = "Cambio de Correo sin Moni Conductor"
+
     if (viejo != "" and nuevo != ""):
         url = "https://fabriziosalazar.atlassian.net//rest/api/2/issue"
         headers = {
@@ -66,7 +71,7 @@ def updateEmailSend(viejo,nuevo,taxi,moni):
                         {
                             "key": "PRUEB"
                         },
-                    "summary": "Update Email",
+                    "summary": titulo,
                     "description": "{code} CALL spj_UpdateDataEmail('" + str(viejo) + "','" + str(
                         nuevo) + "'," + taxi + "," + moni + ");{code}",
                     "issuetype": {
@@ -87,12 +92,11 @@ def updateEmailSend(viejo,nuevo,taxi,moni):
     else:
         messagebox.showwarning(title=None, message="Por favor ingrese todos los datos solicitados")
 
-
 def cambioTelefono():
     telefono = Toplevel()
     telefono.geometry("800x225")
     #telefono.eval('tk::PlaceWindow . center')
-    telefono.title("Cambio de telefono")
+    telefono.title("Cambio de numero")
     telefono.option_add('*Font', '19')
     relleno = Label(telefono, text='')
     relleno.grid(row=0, column=0, padx=5, pady=5)
@@ -112,10 +116,20 @@ def cambioTelefono():
     chkMoni = Checkbutton(telefono, text="Usuario tiene MONI", variable=var2, onvalue=1, offvalue=0)
     chkMoni.grid(row=4, column=3)
 
-    myButton3 = Button(telefono, text="ENVIAR", command=lambda: updateTelefonoSend(str(sub.get()), str(emailE.get()), str(var1.get()),str(var2.get())), fg="white", bg='#3d8af7',width = 20)
+    myButton3 = Button(telefono, text="ENVIAR", command=lambda: updateTelefonoSend(str(sub.get()), str(emailE.get()), str(var1.get()),str(var2.get())), fg="white", bg='#404040',width = 20)
     myButton3.grid(pady=5, padx=5, row=5, column=3)
 
 def updateTelefonoSend(viejo,nuevo,taxi,moni):
+    titulo = ""
+    if (moni == "1" and taxi == "0"):
+        titulo = "Cambio de Numero Con Moni NO Conductor"
+    elif (moni == "1" and taxi == "1"):
+        titulo = "Cambio de Numero con Moni Conductor"
+    elif (moni == "0" and taxi == "0"):
+        titulo = "Cambio de Numero sin Moni NO conductor"
+    elif (moni == "0" and taxi == "1"):
+        titulo = "Cambio de Numero sin Moni Conductor"
+
     if(viejo != "" and nuevo != ""):
         url = "https://fabriziosalazar.atlassian.net//rest/api/2/issue"
         headers = {
@@ -129,7 +143,7 @@ def updateTelefonoSend(viejo,nuevo,taxi,moni):
                         {
                             "key": "PRUEB"
                         },
-                    "summary": "Update Telefono SuperApp",
+                    "summary": titulo,
                     "description": "{code} CALL spj_UpdateDataPhone('" + str(viejo) + "','" + str(
                         nuevo) + "'," + taxi + "," + moni + ");{code}",
                     "issuetype": {
@@ -151,12 +165,11 @@ def updateTelefonoSend(viejo,nuevo,taxi,moni):
     else:
         messagebox.showwarning(title=None, message="Por favor ingrese todos los datos solicitados")
 
-
 def reembolso():
     reemb = Toplevel()
     reemb.geometry("800x225")
     # telefono.eval('tk::PlaceWindow . center')
-    reemb.title("Reembolso de dinero")
+    reemb.title("Reembolso o débito de dinero")
     reemb.option_add('*Font', '19')
     relleno = Label(reemb, text='')
     relleno.grid(row=0, column=0, padx=5, pady=5)
@@ -181,22 +194,22 @@ def reembolso():
                                     "Crédito por transacción fallida de recarga EXTERNA",
                                     "Crédito por transacción fallida de envío de dinero a otro usuario",
                                     "Débito por transacción fallida de recibo de dinero de otro usuario",
-                                    "Crédito_por devolución de dinero comercio"],
+                                    "Crédito por devolución de dinero comercio"],
                         state = "readonly", width = 48)
     combo.grid(column=3, row=3, padx=5, pady=5)
     combo.current(0)
 
     myButton3 = Button(reemb, text="ENVIAR",
-                       command=lambda: reembolsoSend(str(tel.get()), str(monto.get()), str(combo.get())), fg="white", bg='#3d8af7',width = 20)
+                       command=lambda: reembolsoSend(str(tel.get()), str(monto.get()), str(combo.get())), fg="white", bg='#404040',width = 20)
     myButton3.grid(pady=15, padx=5, row=5, column=3)
-
-
 
 def reembolsoSend(telefono, monto, fill):
     relleno = rellenoReembolso(fill)
     signo = ""
+    titulo = "Reversal Wallet Acreditar"
     if(relleno.__contains__("Débito")):
         signo = "-"
+        titulo = "Reversal Wallet Debitar"
     if (telefono != "" and monto != ""):
         url = "https://fabriziosalazar.atlassian.net//rest/api/2/issue"
         headers = {
@@ -210,9 +223,9 @@ def reembolsoSend(telefono, monto, fill):
                         {
                             "key": "PRUEB"
                         },
-                    "summary": "Reembolso",
-                    "description": "{code} CALL spReversal_transaction('" + str(telefono) + "'," + signo + str(
-                        monto) + ",0," + relleno + ");{code}",
+                    "summary": titulo,
+                    "description": "*RECUERDE editar espacio de <fecha> y/o <comercio> en caso de ser necesario* \n {code} CALL spReversal_transaction('" + str(telefono) + "'," + signo + str(
+                        monto) + ".00,0," + relleno + ");{code}",
                     "issuetype": {
                         "name": "Task"
                     },
@@ -251,7 +264,7 @@ def rellenoReembolso(texto):
         relleno = "1034,7,'Crédito_por_transacción_fallida_de_envío_de_dinero_a_otro_usuario_<fecha>'"
     elif(texto == "Débito por transacción fallida de recibo de dinero de otro usuario"):
         relleno = "1037,7,'Débito_por_transacción_fallida_de_recibo_de_dinero_de_otro_usuario_<fecha>'"
-    elif(texto == "Crédito por devolución de dinero de comercio"):
+    elif(texto == "Crédito por devolución de dinero comercio"):
         relleno = "1046,7,'Crédito_por_devolución_de_dinero_de_<comercio>'"
 
 
@@ -261,7 +274,7 @@ def cambioNombreSA():
     nombre = Toplevel()
     nombre.geometry("800x240")
     
-    nombre.title("Cambio de nombre SA")
+    nombre.title("Cambio de Nombre SuperApp")
     nombre.option_add('*Font', '19')
     relleno = Label(nombre, text='')
     relleno.grid(row=0, column=0, padx=5, pady=5)
@@ -283,11 +296,11 @@ def cambioNombreSA():
     apell2.grid(row=4, column=3, padx=5, pady=5)
 
     myButton3 = Button(nombre, text="ENVIAR" , command = lambda: cambioNombreSASend(tel.get(),name.get(),apell1.get(),apell2.get()),
-                       fg="white",bg='#3d8af7', width=20)
+                       fg="white",bg='#404040', width=20)
     myButton3.grid(pady=15, padx=5, row=5, column=3)
 
 def cambioNombreSASend(telefono,nombre,apell1,apell2):
-    if (telefono != "" and nombre != "" and apell1 != "" and apell2 != ""):
+    if (telefono != "" and nombre != "" and apell1 != ""):
         url = "https://fabriziosalazar.atlassian.net//rest/api/2/issue"
         headers = {
             "Accept": "application/json",
@@ -300,7 +313,7 @@ def cambioNombreSASend(telefono,nombre,apell1,apell2):
                         {
                             "key": "PRUEB"
                         },
-                    "summary": "Cambio de nombre SA",
+                    "summary": "Cambio de Nombre SuperApp",
                     "description": "{code} CALL spj_UpdateNameUser(" + str(telefono) + ",'" + str(nombre) + "','" + str(
                         apell1) + "','" + str(apell2) + "'" + ''");{code}",
                     "issuetype": {
@@ -321,18 +334,74 @@ def cambioNombreSASend(telefono,nombre,apell1,apell2):
     else:
         messagebox.showwarning(title=None, message="Por favor ingrese todos los datos solicitados")
 
+def cierreCuenta():
+    cierre = Toplevel()
+    cierre.geometry("700x150")
+    # telefono.eval('tk::PlaceWindow . center')
+    cierre.title("Cierre de cuenta SA")
+    cierre.option_add('*Font', '19')
+    relleno = Label(cierre, text='')
+    relleno.grid(row=0, column=0, padx=5, pady=5)
+    labelTel = Label(cierre, text='Ingrese el numero de telefono del usuario')
+    labelTel.grid(row=1, column=2, padx=5, pady=5)
+    tel = Entry(cierre, width=40)
+    tel.grid(row=1, column=3, padx=5, pady=5)
 
-myButton1 = Button(root, text="Cambio correo", command = cambioEmail, fg="white",bg='#3d8af7')
+    myButton3 = Button(cierre, text="ENVIAR",
+                       command=lambda: cierreCuentaSend(str(tel.get())), fg="white", bg='#404040',width = 20)
+    myButton3.grid(pady=5, padx=5, row=5, column=3)
+
+def cierreCuentaSend(tel):
+    if(tel != ""):
+        url = "https://fabriziosalazar.atlassian.net//rest/api/2/issue"
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+        payload = json.dumps(
+            {
+                "fields": {
+                    "project":
+                        {
+                            "key": "PRUEB"
+                        },
+                    "summary": "Cierre de Cuenta SA",
+                    "description": "NOTAS IMPORTANTES \n * Esto es solo el cierre del lado de SuperApp. Si el usuario tiene Moni, se debe gestionar por separado el cierre en Admin Tool y NAE. \n"
+                                   "* Tomar en cuenta el dinero en Wallet del usuario antes de hacer el cierre.\n"
+                                   "* NO utilizar para Fusion de Cuentas, este se debe escalar a Tech siempre.\n  {code} CALL spjDeleteAccount('" + str(tel) + "','cierre_de_cuenta');{code}",
+                    "issuetype": {
+                        "name": "Task"
+                    },
+                    "assignee": {
+                        "accountId": "60f998fe52162b0068015bd2"
+                    },
+
+                }
+            }
+        )
+        response = requests.post(url, headers=headers, data=payload,
+                                 auth=("fabriziosg95@gmail.com", "6pmQHN1i83nE61HDuBmCA38E"))
+        data = response.json()
+        print(data["key"])
+        open_url("https://fabriziosalazar.atlassian.net/browse/" + data["key"])
+
+    else:
+        messagebox.showwarning(title=None, message="Por favor ingrese todos los datos solicitados")
+
+myButton1 = Button(root, text="Cambio correo", command = cambioEmail, fg="white",bg='#404040', font = 'sans 12 bold')
 myButton1.grid(pady=10, padx=5, row=0, column=0)
 
-myButton2 = Button(root, text="Cambio telefono", command = cambioTelefono, fg="white",bg='#3d8af7')
+myButton2 = Button(root, text="Cambio numero", command = cambioTelefono, fg="white",bg='#404040', font = 'sans 12 bold')
 myButton2.grid(pady=10, padx=5, row=0, column=1)
 
-myButton3 = Button(root, text="Cambio nombre", command = cambioNombreSA, fg="white",bg='#3d8af7')
+myButton3 = Button(root, text="Cambio nombre", command = cambioNombreSA, fg="white",bg='#404040', font = 'sans 12 bold')
 myButton3.grid(pady=10, padx=5, row=0, column=2)
 
-myButton4 = Button(root, text="Reembolsos", command = reembolso, fg="white",bg='#3d8af7')
+myButton4 = Button(root, text="Reembolsos", command = reembolso, fg="white",bg='#404040', font = 'sans 12 bold')
 myButton4.grid(pady=10, padx=5, row=0, column=3)
+
+myButton5 = Button(root, text="Cierre Cuentas", command = cierreCuenta, fg="white",bg='#404040', font = 'sans 12 bold')
+myButton5.grid(pady=10, padx=5, row=0, column=4)
 
 #Declaracion menus
 #menubar = Menu(root)
